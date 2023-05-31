@@ -51,16 +51,26 @@ class SwishJitAutoFn(torch.autograd.Function):
         return swish_jit_bwd(x, grad_output)
 
 
-def swish_me(x, inplace=False):
-    return SwishJitAutoFn.apply(x)
+# def swish_me(x, inplace=False):
+#     return SwishJitAutoFn.apply(x)
 
+def swish_me(x, inplace=False):
+    return x * torch.sigmoid(x)
+
+
+# class SwishMe(nn.Module):
+#     def __init__(self, inplace: bool = False):
+#         super(SwishMe, self).__init__()
+
+#     def forward(self, x):
+#         return SwishJitAutoFn.apply(x)
 
 class SwishMe(nn.Module):
     def __init__(self, inplace: bool = False):
         super(SwishMe, self).__init__()
 
     def forward(self, x):
-        return SwishJitAutoFn.apply(x)
+        return x * torch.sigmoid(x)
 
 
 @torch.jit.script
