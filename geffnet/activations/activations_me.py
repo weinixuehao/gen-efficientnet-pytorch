@@ -172,13 +172,22 @@ class HardSwishJitAutoFn(torch.autograd.Function):
         return hard_swish_jit_bwd(x, grad_output)
 
 
+# def hard_swish_me(x, inplace=False):
+#     return HardSwishJitAutoFn.apply(x)
+
 def hard_swish_me(x, inplace=False):
-    return HardSwishJitAutoFn.apply(x)
+    return x * F.relu6(x + 3., inplace=True) / 6.
 
+# class HardSwishMe(nn.Module):
+#     def __init__(self, inplace: bool = False):
+#         super(HardSwishMe, self).__init__()
 
+#     def forward(self, x):
+#         return HardSwishJitAutoFn.apply(x)
+    
 class HardSwishMe(nn.Module):
     def __init__(self, inplace: bool = False):
         super(HardSwishMe, self).__init__()
 
     def forward(self, x):
-        return HardSwishJitAutoFn.apply(x)
+        return x * F.relu6(x + 3., inplace=True) / 6.
